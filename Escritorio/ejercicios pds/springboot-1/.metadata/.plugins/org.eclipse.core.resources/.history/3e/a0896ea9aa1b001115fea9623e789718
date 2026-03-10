@@ -1,0 +1,43 @@
+package inf.pds.tpv.domain.model.producto;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import inf.pds.tpv.domain.model.producto.ProductoId.IdentificadorProductoException;
+
+class ProductoIdTest {
+
+    @Test
+    void testCrearProductoIdValido() throws IdentificadorProductoException {
+        // Clase de equivalencia: Valores > 100
+        Long codigoValido = 101L;
+        ProductoId id = ProductoId.of(codigoValido);
+        
+        assertNotNull(id);
+        assertEquals(codigoValido, id.getCodigoNumerico());
+    }
+
+    @Test
+    void testCrearProductoIdLimiteInferior() {
+        // Clase de equivalencia (Frontera): Valor 100 (está reservado)
+        // Según la especificación: "códigos <= 100 están reservados"
+        assertThrows(IdentificadorProductoException.class, () -> {
+            ProductoId.of(100L);
+        }, "Debería lanzar excepción porque 100 es un código reservado");
+    }
+
+    @Test
+    void testCrearProductoIdInvalido() {
+        // Clase de equivalencia: Valores menores que 100
+        assertThrows(IdentificadorProductoException.class, () -> {
+            ProductoId.of(50L);
+        });
+    }
+
+    @Test
+    void testCrearProductoIdNulo() {
+        // Clase de equivalencia: Valor nulo
+        assertThrows(IdentificadorProductoException.class, () -> {
+            ProductoId.of(null);
+        }, "El código no puede ser nulo");
+    }
+}

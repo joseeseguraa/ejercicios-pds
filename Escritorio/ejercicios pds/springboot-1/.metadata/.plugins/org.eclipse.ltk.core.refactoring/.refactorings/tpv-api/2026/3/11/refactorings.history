@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;inf.pds.tpv.test.ejemploTest.java&apos; to &apos;EjemploTest.java&apos;&#x0D;&#x0A;- Original project: &apos;tpv-api&apos;&#x0D;&#x0A;- Original element: &apos;inf.pds.tpv.test.ejemploTest.java&apos;&#x0D;&#x0A;- Renamed element: &apos;inf.pds.tpv.test.EjemploTest.java&apos;" description="Rename compilation unit &apos;ejemploTest.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src\/test\/java=/optional=/true=/=/maven.pomderived=/true=/=/test=/true=/&lt;inf.pds.tpv.test{ejemploTest.java" name="EjemploTest.java" references="false" stamp="1773053047771" version="1.0"/>
+</session>

@@ -1,0 +1,62 @@
+package inf.pds.tpv.domain.model.producto;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+class ProductoTest {
+
+    // --- Pruebas de ProductoId (Caja Negra) ---
+    
+    @Test
+    void testProductoIdValido() {
+        // Un ID por encima de 100 es válido
+        ProductoId id = new ProductoId(101); 
+        assertNotNull(id);
+    }
+
+    // --- Pruebas de tieneDescuento() ---
+
+    @Test
+    void testTieneDescuentoSiStockEsMenorQue3() {
+        // Caso: Stock = 2 (Límite inferior para tener descuento)
+        Producto producto = new Producto(new ProductoId(101), "Refresco", 2, 10.0);
+        assertTrue(producto.tieneDescuento(), "Con stock 2 debería tener descuento");
+    }
+
+    @Test
+    void testNoTieneDescuentoSiStockEs3OMas() {
+        // Caso: Stock = 3 (Frontera donde deja de tener descuento)
+        Producto producto = new Producto(new ProductoId(101), "Refresco", 3, 10.0);
+        assertFalse(producto.tieneDescuento(), "Con stock 3 NO debería tener descuento");
+    }
+
+    // --- Pruebas de getDescuento() ---
+
+    @Test
+    void testDescuentoDel20PorCientoSiStockEs1() {
+        // Especificación: 20% si hay 1 producto
+        Producto producto = new Producto(new ProductoId(101), "Pan", 1, 10.0);
+        assertEquals(0.20, producto.getDescuento(), 0.001);
+    }
+
+    @Test
+    void testDescuentoDel10PorCientoSiStockEs2o3() {
+        // Especificación: 10% si hay 2 o 3 productos
+        Producto productoStock2 = new Producto(new ProductoId(101), "Agua", 2, 10.0);
+        Producto productoStock3 = new Producto(new ProductoId(101), "Agua", 3, 10.0);
+        
+        assertEquals(0.10, productoStock2.getDescuento(), 0.001);
+        assertEquals(0.10, productoStock3.getDescuento(), 0.001);
+    }
+
+    @Test
+    void testSinDescuentoSiStockEsDiferenteDe1_2_3() {
+        // Caso: Stock 0 (No entra en las reglas de 1, 2 o 3)
+        Producto productoVacio = new Producto(new ProductoId(101), "Vacio", 0, 10.0);
+        // Caso: Stock 4 (Supera los límites de descuento)
+        Producto productoMuchoStock = new Producto(new ProductoId(101), "Mucho", 4, 10.0);
+
+        assertEquals(0.0, productoVacio.getDescuento(), 0.001);
+        assertEquals(0.0, productoMuchoStock.getDescuento(), 0.001);
+    }
+}

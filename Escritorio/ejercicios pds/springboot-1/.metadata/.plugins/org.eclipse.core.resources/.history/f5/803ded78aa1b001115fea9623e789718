@@ -1,0 +1,50 @@
+package inf.pds.tpv.domain.model.producto;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import inf.pds.tpv.domain.model.producto.ProductoId.IdentificadorProductoException;
+
+class ProductoTest {
+
+    @Test
+    void testProductoConDescuento() throws IdentificadorProductoException {
+        // ARRANGE: ID válido (> 100) y stock < 3 para que tenga descuento
+        // Probamos con cantidad = 1 (según especificación: 20% descuento)
+        ProductoId id = ProductoId.of(101L); 
+        Producto producto = new Producto(id, "Ratón Gamer", 1, 50.0);
+
+        // ACT & ASSERT
+        // 1. Verificamos si tiene descuento (stock 1 < 3)
+        assertTrue(producto.tieneDescuento(), "Con stock 1 debería tener descuento");
+        
+        // 2. Verificamos el valor del descuento (stock 1 -> 20%)
+        assertEquals(0.20, producto.getDescuento(), 0.001, "El descuento para stock 1 debe ser 0.20");
+    }
+
+    @Test
+    void testProductoSinDescuento() throws IdentificadorProductoException {
+        // ARRANGE: ID válido y stock >= 3 para que NO tenga descuento
+        // Probamos con cantidad = 4
+        ProductoId id = ProductoId.of(500L);
+        Producto producto = new Producto(id, "Teclado", 4, 100.0);
+
+        // ACT & ASSERT
+        // 1. Verificamos que no tiene descuento (stock 4 >= 3)
+        assertFalse(producto.tieneDescuento(), "Con stock 4 no debería tener descuento");
+        
+        // 2. Verificamos que el descuento es 0.0
+        assertEquals(0.0, producto.getDescuento(), 0.001, "El descuento para stock 4 debe ser 0.0");
+    }
+
+    @Test
+    void testDescuentoDiezPorCiento() throws IdentificadorProductoException {
+        // Caso extra para cubrir la especificación: stock 2 o 3 -> 10%
+        ProductoId id = ProductoId.of(200L);
+        
+        Producto p2 = new Producto(id, "Prod A", 2, 10.0);
+        Producto p3 = new Producto(id, "Prod B", 3, 10.0);
+
+        assertEquals(0.10, p2.getDescuento(), 0.001, "Stock 2 debe tener 10% de descuento");
+        assertEquals(0.10, p3.getDescuento(), 0.001, "Stock 3 debe tener 10% de descuento");
+    }
+}

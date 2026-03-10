@@ -1,0 +1,39 @@
+package inf.pds.tpv.domain.model.producto;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import inf.pds.tpv.domain.model.producto.ProductoId.IdentificadorProductoException;
+
+class ProductoTest {
+
+    @Test
+    void testProductoConDescuento() throws IdentificadorProductoException {
+        ProductoId id = ProductoId.of(101L); 
+        Producto producto = new Producto(id, "Ratón Gamer", 1, 50.0);
+
+        assertTrue(producto.tieneDescuento(), "Con stock 1 debería tener descuento");
+        
+        assertEquals(0.20, producto.getDescuento(), 0.001, "El descuento para stock 1 debe ser 0.20");
+    }
+
+    @Test
+    void testProductoSinDescuento() throws IdentificadorProductoException {
+        ProductoId id = ProductoId.of(500L);
+        Producto producto = new Producto(id, "Teclado", 4, 100.0);
+
+        assertFalse(producto.tieneDescuento(), "Con stock 4 no debería tener descuento");
+
+        assertEquals(0.0, producto.getDescuento(), 0.001, "El descuento para stock 4 debe ser 0.0");
+    }
+
+    @Test
+    void testDescuentoDiezPorCiento() throws IdentificadorProductoException {
+        ProductoId id = ProductoId.of(200L);
+        
+        Producto p2 = new Producto(id, "Prod A", 2, 10.0);
+        Producto p3 = new Producto(id, "Prod B", 3, 10.0);
+
+        assertEquals(0.10, p2.getDescuento(), 0.001, "Stock 2 debe tener 10% de descuento");
+        assertEquals(0.10, p3.getDescuento(), 0.001, "Stock 3 debe tener 10% de descuento");
+    }
+}
